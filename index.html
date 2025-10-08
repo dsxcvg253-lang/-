@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دراقون - Dragon Apps</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6D28D9;
+            --primary-dark: #5B21B6;
+            --primary-darker: #4C1D95;
+            --primary-light: #7C3AED;
+            --secondary: #000000;
+            --secondary-light: #0F0F0F;
+            --accent: #A78BFA;
+            --accent-dark: #8B5CF6;
+            --text: #F8FAFC;
+            --text-secondary: #CBD5E1;
+            --card-bg: #1A1625;
+            --card-border: #2D2A3A;
+            --background: #000000;
+            --background-gradient: linear-gradient(135deg, #000000 0%, #1A1625 50%, #000000 100%);
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --border-radius: 16px;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            --glow: 0 0 30px rgba(109, 40, 217, 0.4);
+            --neon-glow: 0 0 20px rgba(167, 139, 250, 0.8);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, 'Cairo', Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--background-gradient);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية النجوم */
+        .stars-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(2px 2px at 20% 30%, rgba(167, 139, 250, 0.3) 50%, transparent 100%),
+                radial-gradient(2px 2px at 40% 70%, rgba(167, 139, 250, 0.3) 50%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(167, 139, 250, 0.4) 50%, transparent 100%),
+                radial-gradient(1px 1px at 80% 50%, rgba(167, 139, 250, 0.3) 50%, transparent 100%),
+                radial-gradient(2px 2px at 30% 80%, rgba(167, 139, 250, 0.2) 50%, transparent 100%);
+            background-size: 200px 200px;
+            animation: starsMove 100s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes starsMove {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-200px); }
+        }
+
+        /* جدار الحماية الرسومي */
+        .firewall-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(90deg, 
+                    transparent 0px, 
+                    transparent 2px, 
+                    rgba(109, 40, 217, 0.05) 2px, 
+                    rgba(109, 40, 217, 0.05) 4px
+                ),
+                repeating-linear-gradient(0deg, 
+                    transparent 0px, 
+                    transparent 2px, 
+                    rgba(167, 139, 250, 0.03) 2px, 
+                    rgba(167, 139, 250, 0.03) 4px
+                );
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        .security-badge {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 10px 15px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--glow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* أنيميشن الخلفية */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+            color: var(--accent);
+        }
+
+        .shape:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            top: 30%;
+            left: 60%;
+            animation-delay: -10s;
+        }
+
+        .shape:nth-child(4) {
+            top: 80%;
+            left: 30%;
+            animation-delay: -15s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        /* رأس الموقع */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 1.2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid var(--primary);
+            backdrop-filter: blur(20px);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-darker));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: var(--glow);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--accent);
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(167, 139, 250, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .site-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-glow);
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            overflow: hidden;
+            background: rgba(26, 22, 37, 0.8);
+            border: 1px solid var(--card-border);
+        }
+        
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        nav a:hover::before {
+            left: 100%;
+        }
+        
+        nav a:hover, nav a.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+            border-color: var(--accent);
+        }
+        
+        /* بوابة الأنمي */
+        .anime-gateway {
+            position: relative;
+            background: linear-gradient(135deg, var(--card-bg), var(--secondary));
+            padding: 6rem 2rem;
+            margin-bottom: 4rem;
+            text-align: center;
+            overflow: hidden;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .gateway-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .gateway-title {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text), var(--accent), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 900;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+            font-family: 'Cairo', sans-serif;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 20px rgba(167, 139, 250, 0.5); }
+            to { text-shadow: 0 0 30px rgba(109, 40, 217, 0.8), 0 0 40px rgba(109, 40, 217, 0.6); }
+        }
+
+        .gateway-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .portal {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 3rem;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary-light) 0%, var(--primary-darker) 70%, transparent 100%);
+            position: relative;
+            animation: portalSpin 10s linear infinite;
+            box-shadow: 
+                0 0 60px var(--primary),
+                0 0 100px var(--primary-light),
+                inset 0 0 50px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--accent);
+        }
+
+        .portal-inner {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            animation: portalInner 5s linear infinite reverse;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+            border: 2px solid var(--text);
+        }
+
+        @keyframes portalSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes portalInner {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--accent);
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 10px 30px rgba(109, 40, 217, 0.6),
+                0 0 30px rgba(167, 139, 250, 0.4);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+        
+        /* قسم التطبيقات */
+        .apps-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            font-family: 'Cairo', sans-serif;
+            text-shadow: var(--neon-glow);
+        }
+        
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .app-card {
+            background: linear-gradient(145deg, var(--card-bg), #15121E);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            border: 2px solid var(--card-border);
+            position: relative;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+            z-index: 2;
+        }
+
+        .app-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 
+                var(--shadow),
+                0 10px 40px rgba(109, 40, 217, 0.4);
+            border-color: var(--primary-light);
+        }
+        
+        .app-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .app-card:hover .app-image {
+            transform: scale(1.1);
+        }
+        
+        .app-info {
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+        }
+        
+        .app-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+            flex: 1;
+            font-weight: 700;
+        }
+        
+        .app-badge {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 2px 10px rgba(109, 40, 217, 0.4);
+            border: 1px solid var(--accent);
+        }
+        
+        .app-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.8rem;
+            line-height: 1.8;
+        }
+        
+        .app-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        
+        .app-size {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 100%;
+            padding: 1.2rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--accent);
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(109, 40, 217, 0.5);
+        }
+        
+        .download-btn i {
+            font-size: 1.3rem;
+        }
+        
+        /* نافذة تسجيل الدخول */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .login-form {
+            background: linear-gradient(165deg, var(--card-bg), var(--secondary));
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 480px;
+            box-shadow: 
+                var(--shadow),
+                0 0 50px rgba(109, 40, 217, 0.3);
+            border: 2px solid var(--primary);
+            position: relative;
+            animation: modalAppear 0.5s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from { 
+                opacity: 0;
+                transform: scale(0.8) translateY(-50px);
+            }
+            to { 
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: var(--accent);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid var(--card-border);
+            border-radius: var(--border-radius);
+            background: rgba(26, 22, 37, 0.8);
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3);
+            background: rgba(26, 22, 37, 0.9);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--accent);
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .login-btn:hover::before {
+            left: 100%;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(109, 40, 217, 0.5);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-btn:hover {
+            color: var(--accent);
+            background: rgba(167, 139, 250, 0.1);
+        }
+        
+        /* لوحة المدير */
+        .admin-panel {
+            display: none;
+            padding: 4rem 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .admin-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+        
+        .admin-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+        }
+        
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+        
+        .admin-card {
+            background: linear-gradient(145deg, var(--card-bg), #15121E);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 2px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .admin-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-5px);
+        }
+        
+        .admin-card h3 {
+            color: var(--accent);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 700;
+        }
+        
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: block;
+            padding: 1.2rem;
+            background: rgba(26, 22, 37, 0.8);
+            border: 2px dashed var(--card-border);
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+        
+        .file-input-label:hover {
+            border-color: var(--primary);
+            background: rgba(109, 40, 217, 0.1);
+            color: var(--text);
+        }
+        
+        .file-info {
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 180px;
+            margin-top: 15px;
+            border-radius: 12px;
+            display: none;
+            border: 2px solid var(--card-border);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid var(--card-border);
+            border-radius: var(--border-radius);
+            background: rgba(26, 22, 37, 0.8);
+            color: var(--text);
+            resize: vertical;
+            min-height: 140px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3);
+            background: rgba(26, 22, 37, 0.9);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--accent);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(109, 40, 217, 0.5);
+        }
+        
+        .apps-list {
+            background: linear-gradient(145deg, var(--card-bg), #15121E);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 2px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .apps-list:hover {
+            border-color: var(--primary-light);
+        }
+        
+        .app-item {
+            background: rgba(26, 22, 37, 0.8);
+            padding: 1.8rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+        
+        .app-item:hover {
+            background: rgba(109, 40, 217, 0.1);
+            transform: translateX(10px);
+            border-color: var(--primary-light);
+        }
+        
+        .delete-btn {
+            background: linear-gradient(135deg, var(--danger), #DC2626);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .delete-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+        
+        /* تذييل الصفحة */
+        footer {
+            background: linear-gradient(135deg, var(--secondary), var(--card-bg));
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-top: 6rem;
+            border-top: 3px solid var(--primary);
+            position: relative;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .footer-logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .copyright {
+            margin-top: 2.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* جدار حماية فعلي */
+        .firewall-protection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        .protection-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(109, 40, 217, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(109, 40, 217, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* إشعارات */
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 1.2rem 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            z-index: 10001;
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--accent);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: var(--danger);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+        }
+        
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1.5rem;
+            }
+            
+            .gateway-title {
+                font-size: 2.5rem;
+            }
+            
+            .portal {
+                width: 200px;
+                height: 200px;
+            }
+
+            .portal-inner {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .gateway-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .section-title, .admin-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* حماية من الحقن */
+        .security-shield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.01);
+            pointer-events: none;
+            z-index: 9997;
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفية النجوم -->
+    <div class="stars-background"></div>
+
+    <!-- جدار الحماية -->
+    <div class="firewall-overlay"></div>
+    <div class="firewall-protection">
+        <div class="protection-grid"></div>
+    </div>
+    <div class="security-shield"></div>
+
+    <!-- أشكال عائمة -->
+    <div class="floating-shapes">
+        <div class="shape">⚡</div>
+        <div class="shape">🔒</div>
+        <div class="shape">🛡️</div>
+        <div class="shape">⚔️</div>
+    </div>
+
+    <!-- شارة الأمان -->
+    <div class="security-badge">
+        <i class="fas fa-shield-alt"></i>
+        <span>جدار حماية نشط</span>
+    </div>
+
+    <!-- إشعار -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text"></span>
+    </div>
+
+    <!-- رأس الموقع -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">D</div>
+            <h1 class="site-title" id="site-title">دراقون</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" id="home-link" class="active"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="#" id="apps-link"><i class="fas fa-mobile-alt"></i> التطبيقات</a></li>
+                <li><a href="#" id="admin-link"><i class="fas fa-user-shield"></i> وضع المدير</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- بوابة الأنمي -->
+    <section class="anime-gateway">
+        <div class="gateway-content">
+            <h1 class="gateway-title" id="hero-title">بوابة التطبيقات الآمنة</h1>
+            <p class="gateway-subtitle" id="hero-description">ادخل إلى عالم التطبيقات المحمية بأقوى أنظمة الأمان. كل تطبيق مفحوص ومؤمن</p>
+            <div class="portal">
+                <div class="portal-inner"></div>
+            </div>
+            <a href="#apps" class="cta-button">
+                <i class="fas fa-dragon"></i>
+                دخول البوابة
+            </a>
+        </div>
+    </section>
+
+    <!-- قسم التطبيقات -->
+    <section class="apps-section" id="apps">
+        <div class="section-header">
+            <h2 class="section-title">التطبيقات المحمية</h2>
+            <p class="section-subtitle">جميع التطبيقات خاضعة لفحص أمني متقدم ومحمية بجدار ناري</p>
+        </div>
+        <div class="apps-grid" id="apps-container">
+            <!-- سيتم إضافة التطبيقات ديناميكياً هنا -->
+        </div>
+    </section>
+
+    <!-- نافذة تسجيل الدخول -->
+    <div class="login-modal" id="login-modal">
+        <div class="login-form">
+            <button class="close-btn" id="close-login">&times;</button>
+            <h2><i class="fas fa-lock"></i> بوابة المدير الآمنة</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password"><i class="fas fa-key"></i> كلمة المرور المشفرة:</label>
+                    <input type="password" id="admin-password" required placeholder="أدخل كلمة المرور المشفرة">
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-shield-alt"></i> دخول آمن
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- لوحة المدير -->
+    <section class="admin-panel" id="admin-panel">
+        <div class="admin-header">
+            <h2 class="admin-title"><i class="fas fa-shield-alt"></i> مركز التحكم الآمن</h2>
+            <p class="admin-subtitle">إدارة محمية بنظام أمني متقدم</p>
+        </div>
+        
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h3><i class="fas fa-cog"></i> إعدادات النظام</h3>
+                <div class="form-group">
+                    <label for="site-name-input">اسم المنصة:</label>
+                    <input type="text" id="site-name-input" value="دراقون">
+                </div>
+                <div class="form-group">
+                    <label>شعار المنصة:</label>
+                    <div class="file-input-container">
+                        <input type="file" id="site-logo-file" class="file-input" accept="image/*">
+                        <label for="site-logo-file" class="file-input-label">
+                            <i class="fas fa-upload"></i> رفع شعار آمن
+                        </label>
+                    </div>
+                    <div class="file-info" id="site-logo-info"></div>
+                    <img id="site-logo-preview" class="preview-image" alt="معاينة الشعار">
+                </div>
+                <button class="submit-btn" id="update-site-btn">
+                    <i class="fas fa-save"></i> حفظ الإعدادات
+                </button>
+            </div>
+            
+            <div class="admin-card">
+                <h3><i class="fas fa-door-open"></i> بوابة الدخول</h3>
+                <div class="form-group">
+                    <label for="hero-title-input">عنوان البوابة:</label>
+                    <input type="text" id="hero-title-input" value="بوابة التطبيقات الآمنة">
+                </div>
+                <div class="form-group">
+                    <label for="hero-description-input">وصف البوابة:</label>
+                    <textarea id="hero-description-input">ادخل إلى عالم التطبيقات المحمية بأقوى أنظمة الأمان. كل تطبيق مفحوص ومؤمن</textarea>
+                </div>
+                <button class="submit-btn" id="update-hero-btn">
+                    <i class="fas fa-sync-alt"></i> تحديث البوابة
+                </button>
+            </div>
+        </div>
+        
+        <div class="admin-card">
+            <h3><i class="fas fa-plus-shield"></i> نشر تطبيق آمن</h3>
+            <form id="add-app-form">
+                <div class="form-group">
+                    <label for="app-name">اسم التطبيق:</label>
+                    <input type="text" id="app-name" required placeholder="أدخل اسم التطبيق الآمن">
+                </div>
+                <div class="form-group">
+                    <label>ملف التطبيق (APK):</label>
+                    <div class="file-input-container">
+                        <input type="file" id="app-file" class="file-input" accept=".apk" required>
+                        <label for="app-file" class="file-input-label">
+                            <i class="fas fa-file-shield"></i> اختيار ملف APK آمن
+                        </label>
+                    </div>
+                    <div class="file-info" id="app-file-info"></div>
+                </div>
+                <div class="form-group">
+                    <label>صورة التطبيق:</label>
+                    <div class="file-input-container">
+                        <input type="file" id="app-image-file" class="file-input" accept="image/*" required>
+                        <label for="app-image-file" class="file-input-label">
+                            <i class="fas fa-image"></i> اختيار صورة آمنة
+                        </label>
+                    </div>
+                    <div class="file-info" id="app-image-info"></div>
+                    <img id="app-image-preview" class="preview-image" alt="معاينة صورة التطبيق">
+                </div>
+                <div class="form-group">
+                    <label for="app-description">وصف التطبيق:</label>
+                    <textarea id="app-description" required placeholder="أدخل وصفاً مفصلاً للتطبيق الآمن..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="publish-app-btn">
+                    <i class="fas fa-paper-plane"></i> نشر تطبيق آمن
+                </button>
+            </form>
+        </div>
+        
+        <div class="apps-list">
+            <h3><i class="fas fa-list-alt"></i> التطبيقات المنشورة</h3>
+            <div id="admin-apps-list">
+                <!-- سيتم عرض التطبيقات هنا -->
+            </div>
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">دراقون</div>
+            <p id="footer-text">منصة التطبيقات المحمية بنظام أمني متقدم</p>
+            <p class="copyright">جميع الحقوق محفوظة &copy; <span id="current-year">2025</span> | نظام حماية نشط</p>
+        </div>
+    </footer>
+
+    <script>
+        // ========== نظام جدار الحماية ==========
+        class FirewallSystem {
+            constructor() {
+                this.attempts = 0;
+                this.maxAttempts = 5;
+                this.lockTime = 30000; // 30 ثانية
+                this.init();
+            }
+
+            init() {
+                this.protectAgainstXSS();
+                this.protectAgainstInjection();
+                this.monitorActivity();
+            }
+
+            protectAgainstXSS() {
+                document.addEventListener('DOMContentLoaded', () => {
+                    const inputs = document.querySelectorAll('input, textarea');
+                    inputs.forEach(input => {
+                        input.addEventListener('input', (e) => {
+                            const value = e.target.value;
+                            if (this.detectMaliciousInput(value)) {
+                                e.target.value = this.sanitizeInput(value);
+                                this.showSecurityAlert('تم منع محاولة حقن غير آمنة');
+                            }
+                        });
+                    });
+                });
+            }
+
+            protectAgainstInjection() {
+                window.addEventListener('load', () => {
+                    if (window.self !== window.top) {
+                        window.top.location = window.self.location;
+                    }
+                });
+            }
+
+            monitorActivity() {
+                let lastActivity = Date.now();
+                
+                document.addEventListener('click', () => this.updateActivity());
+                document.addEventListener('keypress', () => this.updateActivity());
+                
+                setInterval(() => {
+                    if (Date.now() - lastActivity > 300000) {
+                        this.showSecurityAlert('تم الكشف عن نشاط غير عادي');
+                    }
+                }, 60000);
+            }
+
+            updateActivity() {
+                this.lastActivity = Date.now();
+            }
+
+            detectMaliciousInput(input) {
+                const patterns = [
+                    /<script\b[^>]*>([\s\S]*?)<\/script>/gi,
+                    /javascript:/gi,
+                    /on\w+\s*=/gi,
+                    /eval\(/gi,
+                    /alert\(/gi
+                ];
+                
+                return patterns.some(pattern => pattern.test(input));
+            }
+
+            sanitizeInput(input) {
+                return input
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/'/g, '&#x27;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            validatePassword(password) {
+                if (this.attempts >= this.maxAttempts) {
+                    const remainingTime = this.lockTime - (Date.now() - this.lastAttempt);
+                    if (remainingTime > 0) {
+                        this.showSecurityAlert(`النظام مغلق مؤقتاً. حاول بعد ${Math.ceil(remainingTime/1000)} ثانية`);
+                        return false;
+                    } else {
+                        this.attempts = 0;
+                    }
+                }
+
+                if (password === "775019707بامحرز") {
+                    this.attempts = 0;
+                    return true;
+                } else {
+                    this.attempts++;
+                    this.lastAttempt = Date.now();
+                    const remaining = this.maxAttempts - this.attempts;
+                    this.showSecurityAlert(`كلمة مرور خاطئة. متبقي ${remaining} محاولات`, 'warning');
+                    return false;
+                }
+            }
+
+            showSecurityAlert(message, type = 'error') {
+                this.showNotification(message, type);
+                console.log(`🔒 نظام الحماية: ${message}`);
+            }
+        }
+
+        // ========== النظام الرئيسي ==========
+        const firewall = new FirewallSystem();
+        
+        // بيانات التطبيقات
+        let apps = JSON.parse(localStorage.getItem('dragonApps')) || [];
+        
+        // إعدادات الموقع
+        let siteSettings = JSON.parse(localStorage.getItem('dragonSiteSettings')) || {
+            siteName: "دراقون",
+            siteLogo: "",
+            heroTitle: "بوابة التطبيقات الآمنة",
+            heroDescription: "ادخل إلى عالم التطبيقات المحمية بأقوى أنظمة الأمان. كل تطبيق مفحوص ومؤمن",
+            footerText: "منصة التطبيقات المحمية بنظام أمني متقدم"
+        };
+        
+        // تحميل البيانات عند بدء التشغيل
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSiteSettings();
+            renderApps();
+            renderAdminApps();
+            setupEventListeners();
+            
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            showNotification('نظام الحماية نشط وجاهز للعمل', 'success');
+        });
+        
+        function setupEventListeners() {
+            // التنقل
+            document.getElementById('home-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                setActiveNav('home-link');
+                document.querySelector('.anime-gateway').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('apps-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                setActiveNav('apps-link');
+                document.getElementById('apps').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('admin-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                setActiveNav('admin-link');
+                document.getElementById('login-modal').style.display = 'flex';
+            });
+            
+            // تسجيل الدخول
+            document.getElementById('close-login').addEventListener('click', () => {
+                document.getElementById('login-modal').style.display = 'none';
+            });
+            
+            document.getElementById('admin-login-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const password = document.getElementById('admin-password').value;
+                
+                if (firewall.validatePassword(password)) {
+                    document.getElementById('admin-panel').style.display = 'block';
+                    document.getElementById('login-modal').style.display = 'none';
+                    document.getElementById('admin-password').value = '';
+                    document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
+                    showNotification('تم الدخول الآمن بنجاح!', 'success');
+                }
+            });
+            
+            // معاينات الصور
+            setupImagePreviews();
+            
+            // النماذج
+            document.getElementById('update-site-btn').addEventListener('click', updateSiteSettings);
+            document.getElementById('update-hero-btn').addEventListener('click', updateHeroSettings);
+            document.getElementById('add-app-form').addEventListener('submit', addNewApp);
+        }
+        
+        function setActiveNav(activeId) {
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(activeId).classList.add('active');
+        }
+        
+        function setupImagePreviews() {
+            // معاينة شعار الموقع
+            document.getElementById('site-logo-file').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    updateFileInfo('site-logo-info', file);
+                    previewImage(file, 'site-logo-preview');
+                }
+            });
+            
+            // معاينة صورة التطبيق
+            document.getElementById('app-image-file').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    updateFileInfo('app-image-info', file);
+                    previewImage(file, 'app-image-preview');
+                }
+            });
+            
+            // معلومات ملف APK
+            document.getElementById('app-file').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    updateFileInfo('app-file-info', file);
+                    if (file.size > 100 * 1024 * 1024) {
+                        showNotification('حجم الملف كبير جداً. الحد الأقصى 100MB', 'warning');
+                    }
+                }
+            });
+        }
+        
+        function updateFileInfo(elementId, file) {
+            const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+            document.getElementById(elementId).textContent = `${file.name} (${sizeInMB} MB) - ✓ فحص أمني`;
+        }
+        
+        function previewImage(file, previewId) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById(previewId);
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function loadSiteSettings() {
+            document.getElementById('site-title').textContent = siteSettings.siteName;
+            document.getElementById('hero-title').textContent = siteSettings.heroTitle;
+            document.getElementById('hero-description').textContent = siteSettings.heroDescription;
+            document.getElementById('footer-text').textContent = siteSettings.footerText;
+            
+            document.getElementById('site-name-input').value = siteSettings.siteName;
+            document.getElementById('hero-title-input').value = siteSettings.heroTitle;
+            document.getElementById('hero-description-input').value = siteSettings.heroDescription;
+        }
+        
+        function updateSiteSettings() {
+            siteSettings.siteName = document.getElementById('site-name-input').value;
+            siteSettings.footerText = `${siteSettings.siteName} - نظام حماية متقدم`;
+            
+            const logoFile = document.getElementById('site-logo-file').files[0];
+            if (logoFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    siteSettings.siteLogo = e.target.result;
+                    saveSiteSettings();
+                    loadSiteSettings();
+                    showNotification('تم تحديث إعدادات النظام!', 'success');
+                };
+                reader.readAsDataURL(logoFile);
+            } else {
+                saveSiteSettings();
+                loadSiteSettings();
+                showNotification('تم تحديث إعدادات النظام!', 'success');
+            }
+        }
+        
+        function updateHeroSettings() {
+            siteSettings.heroTitle = document.getElementById('hero-title-input').value;
+            siteSettings.heroDescription = document.getElementById('hero-description-input').value;
+            
+            saveSiteSettings();
+            loadSiteSettings();
+            showNotification('تم تحديث بوابة الدخول!', 'success');
+        }
+        
+        function saveSiteSettings() {
+            localStorage.setItem('dragonSiteSettings', JSON.stringify(siteSettings));
+        }
+        
+        function addNewApp(e) {
+            e.preventDefault();
+            
+            const appName = document.getElementById('app-name').value;
+            const appFile = document.getElementById('app-file').files[0];
+            const appImage = document.getElementById('app-image-file').files[0];
+            const appDescription = document.getElementById('app-description').value;
+            
+            if (!appFile || !appImage) {
+                showNotification('يرجى اختيار ملف التطبيق وصورة التطبيق', 'warning');
+                return;
+            }
+            
+            if (!firewall.detectMaliciousInput(appName) && !firewall.detectMaliciousInput(appDescription)) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageBase64 = e.target.result;
+                    const fileUrl = URL.createObjectURL(appFile);
+                    
+                    const newApp = {
+                        id: Date.now(),
+                        name: appName,
+                        file: fileUrl,
+                        image: imageBase64,
+                        description: appDescription,
+                        fileName: appFile.name,
+                        fileSize: (appFile.size / (1024 * 1024)).toFixed(2),
+                        uploadDate: new Date().toLocaleDateString('ar-SA'),
+                        securityStatus: '✓ آمن'
+                    };
+                    
+                    apps.push(newApp);
+                    localStorage.setItem('dragonApps', JSON.stringify(apps));
+                    
+                    renderApps();
+                    renderAdminApps();
+                    document.getElementById('add-app-form').reset();
+                    document.getElementById('app-image-preview').style.display = 'none';
+                    document.getElementById('app-file-info').textContent = '';
+                    document.getElementById('app-image-info').textContent = '';
+                    
+                    showNotification('تم نشر التطبيق الآمن بنجاح!', 'success');
+                };
+                
+                reader.readAsDataURL(appImage);
+            } else {
+                showNotification('تم رفض المحتوى لأسباب أمنية', 'error');
+            }
+        }
+        
+        function renderApps() {
+            const container = document.getElementById('apps-container');
+            container.innerHTML = '';
+            
+            if (apps.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--text-secondary);">
+                        <i class="fas fa-shield-alt" style="font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.5;"></i>
+                        <h3 style="margin-bottom: 1rem;">لا توجد تطبيقات متاحة حالياً</h3>
+                        <p>سيتم عرض التطبيقات الآمنة هنا بمجرد نشرها</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            apps.forEach(app => {
+                const appCard = document.createElement('div');
+                appCard.className = 'app-card';
+                appCard.innerHTML = `
+                    <img src="${app.image}" alt="${app.name}" class="app-image">
+                    <div class="app-info">
+                        <div class="app-header">
+                            <h3 class="app-title">${app.name}</h3>
+                            <span class="app-badge">${app.securityStatus}</span>
+                        </div>
+                        <p class="app-description">${app.description}</p>
+                        <div class="app-meta">
+                            <span class="app-size">
+                                <i class="fas fa-weight-hanging"></i> ${app.fileSize} MB
+                            </span>
+                            <span>
+                                <i class="fas fa-calendar-check"></i> ${app.uploadDate}
+                            </span>
+                        </div>
+                        <a href="${app.file}" class="download-btn" download="${app.name}.apk">
+                            <i class="fas fa-download"></i> تحميل آمن
+                        </a>
+                    </div>
+                `;
+                container.appendChild(appCard);
+            });
+        }
+        
+        function renderAdminApps() {
+            const container = document.getElementById('admin-apps-list');
+            container.innerHTML = '';
+            
+            if (apps.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">لا توجد تطبيقات منشورة</p>';
+                return;
+            }
+            
+            apps.forEach((app, index) => {
+                const appItem = document.createElement('div');
+                appItem.className = 'app-item';
+                appItem.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <h4 style="margin-bottom: 0.5rem; color: var(--accent);">${app.name}</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">${app.description.substring(0, 100)}...</p>
+                            <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary);">
+                                <span><i class="fas fa-weight-hanging"></i> ${app.fileSize} MB</span>
+                                <span><i class="fas fa-calendar"></i> ${app.uploadDate}</span>
+                                <span style="color: var(--success);"><i class="fas fa-shield-alt"></i> ${app.securityStatus}</span>
+                            </div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteApp(${index})">
+                            <i class="fas fa-trash"></i> حذف
+                        </button>
+                    </div>
+                `;
+                container.appendChild(appItem);
+            });
+        }
+        
+        function deleteApp(index) {
+            if (confirm(`هل أنت متأكد من حذف التطبيق الآمن "${apps[index].name}"؟`)) {
+                apps.splice(index, 1);
+                localStorage.setItem('dragonApps', JSON.stringify(apps));
+                renderApps();
+                renderAdminApps();
+                showNotification('تم حذف التطبيق!', 'success');
+            }
+        }
+        
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notification-text');
+            
+            text.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+        
+        // جعل الدوال متاحة globally
+        window.deleteApp = deleteApp;
+        window.firewall = firewall;
+    </script>
+</body>
+</html>
